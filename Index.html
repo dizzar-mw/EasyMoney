@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Friendships mw | Official</title>
+    <link rel="icon" href="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg">
+    <style>
+        :root {
+            --wa-green: #075E54; --wa-light: #25D366; --bg: #f0f2f5; --text: #333; --card: #fff;
+        }
+        .dark-theme {
+            --bg: #111b21; --text: #e9edef; --card: #222e35; --wa-green: #202c33;
+        }
+        body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; background: var(--bg); color: var(--text); transition: 0.3s; }
+        
+        /* Nav */
+        nav { background: var(--wa-green); color: white; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
+        .dropdown { position: relative; }
+        .dropbtn { background: #128c7e; border: none; color: white; padding: 8px 15px; border-radius: 5px; cursor: pointer; }
+        .dropdown-content { display: none; position: absolute; right: 0; top: 40px; background: var(--card); min-width: 180px; box-shadow: 0 4px 12px rgba(0,0,0,0.2); border-radius: 8px; }
+        .dropdown-content button { width: 100%; border: none; padding: 12px; background: none; color: var(--text); text-align: left; cursor: pointer; border-bottom: 1px solid #4442; }
+
+        /* Content */
+        .container { max-width: 500px; margin: 20px auto; padding: 15px; }
+        .card { background: var(--card); border-radius: 12px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: 20px; text-align: center; }
+        .btn-pay { background: var(--wa-light); color: white; padding: 15px; width: 100%; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
+        
+        /* Admin Section */
+        #admin-view { display: none; }
+        .admin-box { border: 2px solid #ff4d4d; background: #fff5f5; color: #721c24; padding: 20px; border-radius: 10px; text-align: left; }
+        
+        /* Chat Box for Admin */
+        .chat-area { background: #e5ddd5; height: 200px; overflow-y: scroll; border-radius: 5px; padding: 10px; margin: 10px 0; border: 1px solid #ccc; color: #000; }
+        .chat-input { width: 70%; padding: 10px; border-radius: 5px; border: 1px solid #ccc; }
+
+        footer { text-align: center; padding: 40px; font-size: 12px; opacity: 0.7; }
+    </style>
+</head>
+<body>
+
+<nav>
+    <strong id="nav-title">Friendships mw</strong>
+    <div class="dropdown">
+        <button class="dropbtn" onclick="toggleDrop()">Menu ▾</button>
+        <div id="dropdownMenu" class="dropdown-content">
+            <button onclick="changeLang()" id="lang-btn">Chichewa Version</button>
+            <button onclick="toggleTheme()" id="theme-btn">Dark Mode</button>
+            <button onclick="enterAdmin()">Admin Sign-In</button>
+        </div>
+    </div>
+</nav>
+
+<div class="container" id="user-view">
+    <div class="card">
+        <div style="background:#ddd; height:150px; display:flex; align-items:center; justify-content:center; border-radius:8px; margin-bottom:15px; color:#555;">[ AD PHOTO: EARNINGS PROOF ]</div>
+        <h2 id="hero-h">Earn MK 50,000 Weekly!</h2>
+        <p id="hero-p">Registration Fee: MK 1,500.00</p>
+        <div style="text-align:left; background:#f9f9f9; padding:10px; border-radius:5px; margin-bottom:15px; font-size:14px; color:#000;">
+            <strong>Payment Method:</strong><br>
+            NBS Bank Account: <span style="color:blue;">60001300</span><br>
+            Use Mpamba/Airtel (*444# or *322#)
+        </div>
+        <button class="btn-pay" onclick="alert('Proceeding to receipt upload...')">DEPOSIT MK 1500</button>
+    </div>
+</div>
+
+<div class="container" id="admin-view">
+    <div class="admin-box">
+        <h2 style="margin-top:0;">🚨 MADOLO ADMIN PANEL</h2>
+        <p>This is where "Huckers" watch their victims in real-time.</p>
+        <hr>
+        <div class="chat-area" id="admin-chat">
+            <div><small>System:</small> Ma guy izizi zimakha chonchi. Dolayo imapezedwa munjila imeneyoyo....</div>
+        </div>
+        <input type="text" class="chat-input" id="chat-msg" placeholder="Type message to victim...">
+        <button onclick="sendChat()" style="padding:10px;">Send</button>
+        
+        <h3 style="margin-top:20px;">The Trap Revealed:</h3>
+        <ul>
+            
+            <li><strong>The Bot:</strong> This chat uses an API to notify all 12 admins on Telegram.</li>
+        </ul>
+        <button onclick="location.reload()" style="width:100%; padding:10px; margin-top:10px;">Logout</button>
+    </div>
+</div>
+
+<footer id="footer-text">
+    &copy; 2026 Friendships mw Security. This is a SCAM SIMULATION.
+</footer>
+
+<script>
+    function toggleDrop() { let m = document.getElementById("dropdownMenu"); m.style.display = m.style.display === "block" ? "none" : "block"; }
+    function toggleTheme() { document.body.classList.toggle("dark-theme"); }
+    
+    function changeLang() {
+        let h = document.getElementById("hero-h");
+        let p = document.getElementById("hero-p");
+        if(h.innerText.includes("Earn")) {
+            h.innerText = "Pezani MK 50,000 Sabata Iliyonse!";
+            p.innerText = "Malipiro Olowera: MK 1,500.00";
+            document.getElementById("lang-btn").innerText = "English Version";
+        } else { location.reload(); }
+    }
+
+    function enterAdmin() {
+        if (prompt("Security Code:") === "madolo") {
+            document.getElementById("user-view").style.display = "none";
+            document.getElementById("admin-view").style.display = "block";
+        } else { alert("Access Denied."); }
+    }
+
+    function sendChat() {
+        let msg = document.getElementById("chat-msg").value;
+        if(msg) {
+            let box = document.getElementById("admin-chat");
+            box.innerHTML += `<div><strong>You (Admin):</strong> ${msg}</div>`;
+            document.getElementById("chat-msg").value = "";
+            // Telegram API would be: fetch(`https://api.telegram.org/bot<TOKEN>/sendMessage?chat_id=<ID>&text=${msg}`);
+        }
+    }
+</script>
+</body>
+</html>
